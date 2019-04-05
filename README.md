@@ -9,9 +9,15 @@ Argentina	<br>
 5031 7557 3453 0604<br>
 3711 803032 57522<br>
 
-npm install 
+```
+npm install
+```
+```
 nodemon server.js
+```
+```
 localhost:3000
+```
 
 Pagar con cualquier de las tarjetas de arriba.
 
