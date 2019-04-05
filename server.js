@@ -6,25 +6,22 @@ const config = require('./config');
 const mercadopago = require('mercadopago');
 const fs = require('fs');
 
-// Initialize mercadopago SDK
 mercadopago.configure({
+  sandbox: true,
   access_token: config.access_token
-  // client_id: config.client_id,
-  // client_secret: config.client_secret
 });
 
+app.use(bodyParser.urlencoded({
+    extended: true
+}));
 
-mercadopago.configurations.setAccessToken(config.access_token);
+app.use(bodyParser.json());
 
-payment_methods = mercadopago.get("/v1/payment_methods");
 
-console.log(payment_methods);
-
-app.post(/\/(.+)/, function (req, res) { // Busco el js que quiero correr.
+app.post(/\/(.+)/, function (req, res) {
+  
   var fileFromParameter = req.params[0] + '.js';
-
   if (fs.existsSync(fileFromParameter)) {
-    // Execute the file found
     require('./' + fileFromParameter).run(req, res);
   } else {
     // Return 404
@@ -34,8 +31,16 @@ app.post(/\/(.+)/, function (req, res) { // Busco el js que quiero correr.
   }
 });
 
-app.get('/', function(req, res){
-	res.json({"backend" : "Listening..."});
+
+
+/** bodyParser.urlencoded(options)
+ * Parses the text as URL encoded data (which is how browsers tend to send form data from regular forms set to POST)
+ * and exposes the resulting object (containing the keys and values) on req.body
+ */
+
+// route to '/' to return the html file
+app.get('/', function (req, res, next) {
+  res.sendFile(__dirname + '/index.html');
 });
 
 // Add Body Parser Middleware
